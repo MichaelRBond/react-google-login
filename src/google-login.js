@@ -233,7 +233,6 @@ GoogleLogin.defaultProps = {
   type: 'button',
   tag: 'button',
   buttonText: 'Sign in with Google',
-  scope: 'profile email',
   accessType: 'online',
   prompt: '',
   cookiePolicy: 'single_host_origin',
