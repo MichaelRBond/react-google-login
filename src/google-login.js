@@ -35,6 +35,8 @@ class GoogleLogin extends Component {
       jsSrc
     } = this.props
 
+    console.log("SCOPE 1 -------------", scope);
+
     loadScript(document, 'script', 'google-login', jsSrc, () => {
       const params = {
         client_id: clientId,
@@ -95,6 +97,7 @@ class GoogleLogin extends Component {
       if (responseType === 'code') {
         auth2.grantOfflineAccess(options).then(res => onSuccess(res), err => onFailure(err))
       } else {
+        console.log("options ---------------", options);
         auth2.signIn(options).then(res => this.handleSigninSuccess(res), err => onFailure(err))
       }
     }
