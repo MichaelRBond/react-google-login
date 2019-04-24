@@ -8,6 +8,9 @@ import loadScript from './load-script'
 class GoogleLogin extends Component {
   constructor(props) {
     super(props)
+
+    console.log('<<<<<<<<<<<<<<<< constructor', props)
+
     this.signIn = this.signIn.bind(this)
     this.enableButton = this.enableButton.bind(this)
     this.state = {
@@ -16,6 +19,7 @@ class GoogleLogin extends Component {
       active: false
     }
   }
+
   componentDidMount() {
     const {
       clientId,
