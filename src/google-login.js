@@ -35,7 +35,7 @@ class GoogleLogin extends Component {
       jsSrc
     } = this.props
 
-    console.log("SCOPE 1 -------------", scope);
+    console.log("<<<<<<<<<<<<<<<<< SCOPE: ", scope);
 
     loadScript(document, 'script', 'google-login', jsSrc, () => {
       const params = {
