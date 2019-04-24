@@ -58,6 +58,7 @@ class GoogleLogin extends Component {
       window.gapi.load('auth2', () => {
         this.enableButton()
         if (!window.gapi.auth2.getAuthInstance()) {
+          console.log('<<<<<<<<<<<<<<< auth2.init params', params)
           window.gapi.auth2.init(params).then(
             res => {
               if (isSignedIn && res.isSignedIn.get()) {
