@@ -67,6 +67,7 @@ class GoogleLogin extends Component {
   }
 
   initializeLoginButton() {
+    console.log('<<<<<<<<<<<< Initializing Login Button with state: ', this.state)
     const {
       clientId,
       cookiePolicy,
@@ -104,15 +105,21 @@ class GoogleLogin extends Component {
       }
 
       window.gapi.load('auth2', () => {
+        console.log('<<<<<<<<<<<<<<<<< gapi.load')
         this.enableButton()
         if (this.state.reload || !window.gapi.auth2.getAuthInstance()) {
+          console.log('<<<<<<<<<<<<<<<<< attempting to init with params', params)
           window.gapi.auth2.init(params).then(
             res => {
+              console.log('<<<<<<<<<<<<<<<<< resolved')
               if (isSignedIn && res.isSignedIn.get()) {
                 this.handleSigninSuccess(res.currentUser.get())
               }
             },
-            err => onFailure(err)
+            err => {
+              console.log('<<<<<<<<<<<<<<<<< err', err)
+              onFailure(err)
+            }
           )
         }
         if (autoLoad) {
