@@ -13,10 +13,60 @@ class GoogleLogin extends Component {
     this.state = {
       disabled: true,
       hovered: false,
-      active: false
+      active: false,
+      reload: false,
+      // from props
+      clientId: this.props.clientId,
+      cookiePolicy: this.props.cookiePolicy,
+      loginHint: this.props.loginHint,
+      hostedDomain: this.props.hostedDomain,
+      autoLoad: this.props.autoLoad,
+      isSignedIn: this.props.isSignedIn,
+      fetchBasicProfile: this.props.fetchBasicProfile,
+      redirectUri: this.props.redirectUri,
+      discoveryDocs: this.props.discoveryDocs,
+      onFailure: this.props.onFailure,
+      uxMode: this.props.uxMode,
+      scope: this.props.scope,
+      accessType: this.props.accessType,
+      responseType: this.props.responseType,
+      jsSrc: this.props.jsSrc
     }
   }
+
   componentDidMount() {
+    this.initializeLoginButton()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      clientId: nextProps.clientId,
+      cookiePolicy: nextProps.cookiePolicy,
+      loginHint: nextProps.loginHint,
+      hostedDomain: nextProps.hostedDomain,
+      autoLoad: nextProps.autoLoad,
+      isSignedIn: nextProps.isSignedIn,
+      fetchBasicProfile: nextProps.fetchBasicProfile,
+      redirectUri: nextProps.redirectUri,
+      discoveryDocs: nextProps.discoveryDocs,
+      onFailure: nextProps.onFailure,
+      uxMode: nextProps.uxMode,
+      scope: nextProps.scope,
+      accessType: nextProps.accessType,
+      responseType: nextProps.responseType,
+      jsSrc: nextProps.jsSrc,
+      reload: true
+    })
+    this.initializeLoginButton()
+  }
+
+  componentWillUnmount() {
+    this.enableButton = () => {}
+    const el = document.getElementById('google-login')
+    el.parentNode.removeChild(el)
+  }
+
+  initializeLoginButton() {
     const {
       clientId,
       cookiePolicy,
@@ -33,7 +83,7 @@ class GoogleLogin extends Component {
       accessType,
       responseType,
       jsSrc
-    } = this.props
+    } = this.state
 
     loadScript(document, 'script', 'google-login', jsSrc, () => {
       const params = {
@@ -55,7 +105,7 @@ class GoogleLogin extends Component {
 
       window.gapi.load('auth2', () => {
         this.enableButton()
-        if (!window.gapi.auth2.getAuthInstance()) {
+        if (this.state.reload || !window.gapi.auth2.getAuthInstance()) {
           window.gapi.auth2.init(params).then(
             res => {
               if (isSignedIn && res.isSignedIn.get()) {
@@ -71,11 +121,7 @@ class GoogleLogin extends Component {
       })
     })
   }
-  componentWillUnmount() {
-    this.enableButton = () => {}
-    const el = document.getElementById('google-login')
-    el.parentNode.removeChild(el)
-  }
+
   enableButton() {
     this.setState({
       disabled: false
